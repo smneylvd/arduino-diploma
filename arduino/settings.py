@@ -77,8 +77,16 @@ WSGI_APPLICATION = 'arduino.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': 'app-576a8c21-22e4-4d5a-bf94-0c0f9ac1a6f8-do-user-14104686-0.b.db.ondigitalocean.com',
+        'PORT': '25060',
+        'NAME': 'db',
+        'USER': 'doadmin',
+        'PASSWORD': 'AVNS_80dE33BwTUlt-f16e3Q',
+        'OPTIONS': {
+            'sslmode': 'require',
+            'sslrootcert': '/ca_certificate.crt'
+        },
     }
 }
 
