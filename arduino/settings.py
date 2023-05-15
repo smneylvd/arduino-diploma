@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -24,7 +23,8 @@ SECRET_KEY = 'django-insecure-dgmlq3-fsa=sd$&1k^5mtu@ejsy&zgjw+y1kb+tt7(w10y5l03
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_AGE = 3600
 ALLOWED_HOSTS = ['*']
 AUTH_USER_MODEL = 'main.User'
 
