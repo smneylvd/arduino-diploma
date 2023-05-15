@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Custom styles */
+        .user-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #eee;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .nickname {
+            display: inline-block;
+            font-size: 18px;
+            margin-right: 10px;
+        }
+
+        .delete-user {
+            float: right;
+            font-size: 18px;
+            color: red;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <br>
+    <!-- Choose Device Dropdown Menu -->
+    <div class="form-group">
+        <label for="deviceName">Choose Device</label>
+        <select class="form-control" id="deviceSelector">
+            {% for device in devices %}
+                <option value="{{ device.id }}">{{ device.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- User Icons and Nicknames with Pop-up Form -->
+    <div class="row" id="users-container">
+    </div>
+
+    <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form action="/device/delete-access" method="post">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <input type="hidden" id="device_id" name="device_id" value="">
+                        <input type="hidden" id="user_nickname" name="user_nickname" value="">
+                        <h5 class="modal-title" id="deleteUserModalLabel">Delete User?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete this user?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                        <button type="submit" class="btn btn-danger">Yes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back Button -->
+    <a href="/main">
+        <button type="button" class="btn btn-secondary mt-3">Back</button>
+    </a>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.0.js"
+        integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
+        crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function () {
+        $("#deviceSelector").on("change", function () {
+            $.ajax({
+                url: window.location.origin + "/device/" + ($(this).val()),
+            }).done(function (data) {
+                $("#users-container")[0].innerHTML = "";
+                data = JSON.parse(data);
+                data.forEach((val) => {
+                    if (val['fields']['nickname'] != '{{ user }}') {
+                        $("#users-container")[0].innerHTML += '<div class="col-12"><div class="user-icon"></div><span class="nickname">' + val['fields']['nickname'] + '</span><span class="delete-user" data-toggle="modal" onclick="setDeviceAndUser(' + $("#deviceSelector").val() + "," + val['fields']['nickname'] + ')" data-target="#deleteUserModal">&#x2716;</span></div>'
+                        console.log(val)
+                    }
+                });
+            });
+        })
+    });
+
+    $.ajax({
+        url: window.location.origin + "/device/" + $("#deviceSelector").val(),
+    }).done(function (data) {
+        data = JSON.parse(data);
+        data.forEach((val) => {
+            if (val['fields']['nickname'] != '{{ user }}') {
+                $("#users-container")[0].innerHTML += '<div class="col-12"><div class="user-icon"></div><span class="nickname">' + val['fields']['nickname'] + '</span><span class="delete-user" data-toggle="modal" onclick="setDeviceAndUser(' + $("#deviceSelector").val() + "," + val['fields']['nickname'] + ')" data-target="#deleteUserModal">&#x2716;</span></div>'
+                console.log(val)
+            }
+        });
+    });
+
+    function setDeviceAndUser(dev_id, user_nickname) {
+        $("#device_id").val(dev_id);
+        $("#user_nickname").val(user_nickname);
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

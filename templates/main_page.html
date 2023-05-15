@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Get Device</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container pt-4">
+
+    <!-- Add New Device Button with Pop-up Form -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addDeviceModal">Get Device
+    </button>
+    {{ user }}
+    <a class="btn btn-danger" href="/logout">Logout</a>
+    <div class="modal fade" id="addDeviceModal" tabindex="-1" role="dialog" aria-labelledby="addDeviceModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addDeviceModalLabel">Get Device</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" action="/device/get-access">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="deviceId">Device ID</label>
+                            <input type="text" class="form-control" id="deviceId" name="identifier"
+                                   placeholder="Enter device ID">
+                        </div>
+                        <div class="form-group">
+                            <label for="devicePassword">Password</label>
+                            <input type="password" class="form-control" id="devicePassword" name="password"
+                                   placeholder="Enter password">
+                        </div>
+                        <div class="form-group">
+                            <label for="deviceName">Custom name for device</label>
+                            <input type="text" class="form-control" id="deviceName" name="alias"
+                                   placeholder="Enter name for device">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Get Device</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Choose Device Dropdown Menu -->
+    <form action="/device/set-status" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="chooseDevice">Choose Device</label>
+            <select class="form-control" id="chooseDevice" name="device_id">
+                {% for device in devices %}
+                    <option value="{{ device.id }}">{{ device.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Lock/Unlock Toggle Switch Button -->
+        <div class='interItems p-1'>
+            <h1>Control a solenoid Lock</h1>
+            <div class='interactiveButtons p-1'>
+                <button type="submit" class='onButton btn btn-success' name="action" value="True">on</button>
+                <button type="submit" class='offButton btn btn-danger' name="action" value="False">off</button>
+            </div>
+            {#            <button class='disconnectBtton btn btn-danger'  onclick="disconnect()" name="dis" value="dis">disconnect#}
+            </button>
+        </div>
+    </form>
+
+    <!-- Invite Button with Pop-up Form -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#inviteModal">Invite</button>
+
+    <div class="modal fade" id="inviteModal" tabindex="-1" role="dialog" aria-labelledby="inviteModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="inviteModalLabel">Invite</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="/device/grant-access" method="post">
+                    <div class="modal-body">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="nickname">Nickname</label>
+                            <input type="text" class="form-control" id="nickname" name="nickname"
+                                   placeholder="Enter nickname">
+                        </div>
+                        <div class="form-group">
+                            <label for="deviceName">Device Name</label>
+                            <select class="form-control" id="deviceName" name="device_id">
+                                {% for device in devices %}
+                                    <option value="{{ device.id }}">{{ device.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" data-toggle="modal">
+                            Give Access
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Edit Lockers for Guests Button -->
+    <a href="/access-list">
+        <button type="button" class="btn btn-primary">Edit Lockers for Guests</button>
+    </a>
+
+    <!-- Activity History Button -->
+    <a href="/logs">
+        <button type="button" class="btn btn-primary">Activity History</button>
+    </a>
+    {% if messages or message %}
+        {% for message in messages %}
+            <div class="alert alert-danger mt-4" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
