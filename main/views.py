@@ -12,7 +12,7 @@ from main.models import User, Device, AccessList, Log
 # Create your views here.
 
 def index(req):
-    return render(req, 'launch_page.html')
+    return render(req, 'index.html')
 
 
 def login_view(req):
