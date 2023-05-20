@@ -103,7 +103,7 @@
                 data = JSON.parse(data);
                 data.forEach((val) => {
                     if (val['fields']['nickname'] != '{{ user }}') {
-                        $("#users-container")[0].innerHTML += '<div class="col-12"><div class="user-icon"></div><span class="nickname">' + val['fields']['nickname'] + '</span><span class="delete-user" data-toggle="modal" onclick="setDeviceAndUser(' + $("#deviceSelector").val() + "," + val['fields']['nickname'] + ')" data-target="#deleteUserModal">&#x2716;</span></div>'
+                        $("#users-container")[0].innerHTML += '<div class="col-12"><div class="user-icon"></div><span class="nickname">' + val['fields']['nickname'] + '</span><span class="delete-user" data-toggle="modal" onclick="setDeviceAndUser(' + $("#deviceSelector").val() + "," + "'" + val['fields']['nickname'] + "'" + ')" data-target="#deleteUserModal">&#x2716;</span></div>'
                         console.log(val)
                     }
                 });
@@ -117,7 +117,7 @@
         data = JSON.parse(data);
         data.forEach((val) => {
             if (val['fields']['nickname'] != '{{ user }}') {
-                $("#users-container")[0].innerHTML += '<div class="col-12"><div class="user-icon"></div><span class="nickname">' + val['fields']['nickname'] + '</span><span class="delete-user" data-toggle="modal" onclick="setDeviceAndUser(' + $("#deviceSelector").val() + "," + val['fields']['nickname'] + ')" data-target="#deleteUserModal">&#x2716;</span></div>'
+                $("#users-container")[0].innerHTML += '<div class="col-12"><div class="user-icon"></div><span class="nickname">' + val['fields']['nickname'] + '</span><span class="delete-user" data-toggle="modal" onclick="setDeviceAndUser(' + $("#deviceSelector").val() + "," + "'" + val['fields']['nickname'] + "'" + ')" data-target="#deleteUserModal">&#x2716;</span></div>'
                 console.log(val)
             }
         });
@@ -126,6 +126,7 @@
     function setDeviceAndUser(dev_id, user_nickname) {
         $("#device_id").val(dev_id);
         $("#user_nickname").val(user_nickname);
+        console.log(dev_id, user_nickname)
     }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
