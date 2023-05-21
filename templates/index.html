@@ -19,38 +19,45 @@
 
     .container {
         height: 200px;
-        position: relative;
+    }
+
+    .login-wrapper {
+        margin-top: 100px;
     }
 
     .login_button {
         margin: 0;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        -ms-transform: translate(-50%, -50%);
-        transform: translate(-50%, -50%);
     }
 
     .register_button {
         margin: 0;
-        position: absolute;
-        top: 75%;
-        left: 50%;
-        -ms-transform: translate(-50%, -50%);
-        transform: translate(-50%, -50%);
     }
 </style>
-<div class="launch_title"><h1>Come on in.</h1>
-    <h3>Welcome to a life  that is simpler and more secure.</h3>
+<div class="launch_title">
+    <h1 class="display-1">
+        Come on in.
+    </h1>
+    <h5 class="text-body-secondary">Welcome to a life  that is simpler and more secure.</h5>
+
 </div>
 
-<div class="container">
-    <a href="/login">
-        <button class="login_button button btn btn-primary">Login</button>
-    </a>
-    <a href="/register">
-        <button class="register_button button btn btn-primary">Register</button>
-    </a>
+<div class="container login-wrapper">
+    <div class="row">
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-4">
+            <div class="d-grid gap-2">
+                <a href="/login" class="login_button button btn btn-primary btn-lg">
+                    Login
+                </a>
+                <a href="/register" class="register_button button btn btn-outline-primary">
+                    Register
+                </a>
+            </div>
+        </div>
+        <div class="col-md-4">
+        </div>
+    </div>
 </div>
 </body>
 </html>
